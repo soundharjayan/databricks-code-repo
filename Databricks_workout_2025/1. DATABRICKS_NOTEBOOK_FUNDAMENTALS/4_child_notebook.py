@@ -13,7 +13,7 @@
 
 # COMMAND ----------
 
-dbutils.widgets.text("table_name", "cities")
+dbutils.widgets.text("table_name", "cust")
 
 # COMMAND ----------
 
@@ -22,4 +22,10 @@ print(text_box_value)
 
 # COMMAND ----------
 
-spark.read.table(text_box_value).display()
+#Spark SQL
+spark.read.table(text_box_value).display()#domain specific lang(FBP)
+spark.sql(f"select * from {text_box_value}").display()#Declarative lang
+
+# COMMAND ----------
+
+dbutils.notebook.exit("notebook completed successfully")
