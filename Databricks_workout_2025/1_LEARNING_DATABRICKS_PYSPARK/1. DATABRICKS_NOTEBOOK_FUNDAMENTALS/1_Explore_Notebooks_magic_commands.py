@@ -64,6 +64,11 @@
 
 # COMMAND ----------
 
+# MAGIC %md
+# MAGIC
+
+# COMMAND ----------
+
 # MAGIC %fs ls "dbfs:///Volumes/workspace/default/volumewe47_datalake"
 
 # COMMAND ----------
