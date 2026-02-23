@@ -1,13 +1,8 @@
 from pyspark import pipelines as dp
 from pyspark.sql.functions import *
-#How to bring this external library (not present in Databricks platform)
-# In general we do pip install <package-name>
-#But in Databricks we do the following - 
-# go to the Setting in the top right -> Pipeline environment -> Edit environment -> copy word2number -> apply environment
-
 from word2number import w2n
 
-#Python Function
+#python to UDF
 def word_to_num_logic(value):
     if value is None:
         return None
@@ -18,18 +13,15 @@ def word_to_num_logic(value):
             return w2n.word_to_num(str(value).lower())
         except:
             return None
-#Normal Python Funct to UDF Function        
 convert_age_udf = udf(word_to_num_logic)
 
-#Applying the UDF in our pipeline
-@dp.table(
-    name="silver_staff_dlt3",
-    comment="Standardized staff data",#This is for governance
-    table_properties={"quality": "silver"}#This is for governance
+@dp.materialized_view(
+    name="silver_staff_dlt2",
+    comment="Standardized staff data"
 )
-def silver_staff_dlt3():
+def silver_staff_dlt1():
     return (
-        spark.readStream.table("bronze_staff_data1")
+        spark.read.table("bronze_staff_data1")
         .select(
             col("shipment_id").cast("bigint"),
             convert_age_udf(col("age")).alias("age"),
@@ -41,15 +33,14 @@ def silver_staff_dlt3():
         )
     )
 
-@dp.table(
-    name="silver_geotag_dlt3",
+@dp.materialized_view(
+    name="silver_geotag_dlt2",
     comment="Cleaned geotag data",
     table_properties={"quality": "silver"}
 )
-@dp.expect("valid_latitude", "latitude > -90 and latitude < 90")
 def silver_geotag_dlt2():
     return (
-        spark.readStream.table("bronze_geotag_data1")
+        spark.read.table("bronze_geotag_data1")
         .select(
             initcap(col("city_name")).alias("city_name"),
             initcap(col("country")).alias("masked_hub_location"),
@@ -59,15 +50,16 @@ def silver_geotag_dlt2():
         .distinct()
     )
 
-@dp.table(
-    name="silver_shipments_dlt3",
+@dp.materialized_view(
+    name="silver_shipments_dlt2",
     comment="Enriched and split shipments data",
     table_properties={"quality": "silver"}
 )
 def silver_shipments_dlt2():
-    ship_date_col = to_date(col("shipment_date"), "yy-MM-dd")    
+    ship_date_col = to_date(col("shipment_date"), "yy-MM-dd")
+    
     return (
-        spark.readStream.table("bronze_shipments_data1")
+        spark.read.table("bronze_shipments_data1")
         .withColumn("domain", lit("Logistics"))
         .withColumn("ingestion_timestamp", current_timestamp())
         .withColumn("is_expedited_flag_initial", lit(False).cast("boolean"))
@@ -95,4 +87,5 @@ def silver_shipments_dlt2():
         .withColumn("order_prefix", substring(col("order_id"), 1, 3))
         .withColumn("order_sequence", substring(col("order_id"), 4, 10))
         .withColumn("ship_day", dayofmonth(ship_date_col))
-        .withColumn("route_lane", concat_ws("->", col("source_city"), col("destination_city"))))
+        .withColumn("route_lane", concat_ws("->", col("source_city"), col("destination_city")))
+    )

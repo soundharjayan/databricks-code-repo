@@ -6,8 +6,7 @@ AS SELECT * FROM cloud_files(
   "/Volumes/catalog1_we47/schema1_we47/datalake/staff", 
   "csv", 
   map("inferColumnTypes", "true",
-    "schemaEvolutionMode", "addNewColumns")
-);
+    "schemaEvolutionMode", "addNewColumns"));
 
 CREATE OR REFRESH STREAMING TABLE catalog2_we47.schema2_we47.bronze_geotag2
 COMMENT "Raw geotag data ingested from landing zone"

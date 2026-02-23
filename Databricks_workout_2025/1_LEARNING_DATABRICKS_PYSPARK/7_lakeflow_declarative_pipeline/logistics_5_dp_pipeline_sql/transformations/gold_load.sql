@@ -1,5 +1,5 @@
 -- GOLD LAYER (Aggregation & Business Logic)
--- Note: Materialized Views (LIVE TABLE) are often preferred for Gold aggregations 
+-- Note: Materialized Views (LIVE TABLE) are  preferred for Gold aggregations 
 CREATE OR REFRESH LIVE TABLE catalog2_we47.schema2_we47.gold_staff_geo_enriched_dlt2
 COMMENT "Staff enriched with Geo Location data"
 TBLPROPERTIES ("quality" = "gold")

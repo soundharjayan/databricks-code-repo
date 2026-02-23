@@ -11,7 +11,7 @@
 -- MAGIC %python
 -- MAGIC import sys
 -- MAGIC
--- MAGIC sys.path.append("/Workspace/Users/soundharjayan@gmail.com/databricks-code-repo/Databricks_workout_2025/3_TOPIC_WISE_USECASES_WORKOUT/6.LAKEFLOW_DLT_DECLARATIVE_DP_PIPELINE/Logistics_DLT_ETL_DP_pipeline_sql")
+-- MAGIC sys.path.append("/Workspace/Users/soundharjayan@gmail.com/databricks-code-repo/Databricks_workout_2025/3_TOPIC_WISE_USECASES_WORKOUT/7_LAKEFLOW_DLT_DECLARATIVE_DP_PIPELINE/Logistics_DLT_ETL_DP_pipeline_sql")
 
 -- COMMAND ----------
 

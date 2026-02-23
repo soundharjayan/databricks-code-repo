@@ -1,5 +1,6 @@
 CREATE OR REFRESH STREAMING TABLE catalog2_we47.schema2_we47.silver_staff_dlt2
 COMMENT "Standardized staff data"
+-- Adding the expectation here
 AS
 SELECT
   CAST(shipment_id AS BIGINT) AS shipment_id,
@@ -49,3 +50,4 @@ SELECT
   DAY(TO_DATE(shipment_date, 'yy-MM-dd')) AS ship_day,
   CONCAT_WS('->', source_city, destination_city) AS route_lane
 FROM STREAM(catalog2_we47.schema2_we47.bronze_shipments2);
+

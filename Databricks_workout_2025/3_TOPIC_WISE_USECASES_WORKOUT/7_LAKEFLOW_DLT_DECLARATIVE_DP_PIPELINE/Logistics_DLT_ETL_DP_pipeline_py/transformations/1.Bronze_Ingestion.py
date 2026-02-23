@@ -13,7 +13,6 @@ def bronze_staff_data():
 
 @dp.table(name="bronze_geotag_data1")
 def bronze_geotag_data():
-
     return (
         spark.readStream
             .format("cloudFiles")
@@ -25,7 +24,6 @@ def bronze_geotag_data():
 
 @dp.table(name="bronze_shipments_data1")
 def bronze_shipments_data():
-
     return (
         spark.readStream
             .format("cloudFiles")
