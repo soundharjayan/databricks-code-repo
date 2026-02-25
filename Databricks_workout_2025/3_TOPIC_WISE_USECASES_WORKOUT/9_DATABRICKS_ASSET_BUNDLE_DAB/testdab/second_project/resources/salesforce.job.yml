@@ -5,13 +5,13 @@ resources:
       tasks:
         - task_key: salesforce_ingestion_by_using_connector
           pipeline_task:
-            pipeline_id: df44b585-ba15-41a6-91ac-3bedafcee72c
+            pipeline_id: ${resources.pipelines.salesforce_ingestion_pipeline.id}
             full_refresh: false
         - task_key: salesforce_transformation
           depends_on:
             - task_key: salesforce_ingestion_by_using_connector
           pipeline_task:
-            pipeline_id: 1147d6f7-4ff6-4fe9-a53d-8c3abd46b9a7
+            pipeline_id: ${resources.pipelines.transformation_pipeline.id}
       queue:
         enabled: true
       performance_target: PERFORMANCE_OPTIMIZED
