@@ -1,0 +1,15 @@
+resources:
+  pipelines:
+    pipeline_lakeflow_native_ingestion_pipeline_for_dab:
+      name: Lakeflow_native_ingestion_pipeline_for_dab
+      libraries:
+        - glob:
+            include: ../src/Lakeflow_native_ingestion_transformation_pipeline_for_dab/transformations/**
+      schema: logistics_dab_schema
+      continuous: false
+      development: false
+      photon: true
+      channel: CURRENT
+      catalog: soundhar_catalog
+      serverless: true
+      root_path: ../src/Lakeflow_native_ingestion_transformation_pipeline_for_dab

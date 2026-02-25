@@ -1,0 +1,16 @@
+resources:
+  pipelines:
+    salesforce_ingestion_pipeline:
+      name: sales_force_native_ingestion_pipeline
+      channel: CURRENT
+
+      ingestion_definition:
+        source_type: SALESFORCE
+        connection_name: sales_force_ingestion
+
+        objects:
+          - table:
+              source_schema: objects
+              source_table: Account
+              destination_catalog: soundhar_catalog
+              destination_schema: default
