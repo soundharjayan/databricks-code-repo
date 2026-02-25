@@ -24,3 +24,31 @@ SELECT DISTINCT
   longitude
 FROM STREAM(soundhar_catalog.logistics_dlt_schema.bronze_geotag2);
 
+CREATE OR REFRESH STREAMING TABLE soundhar_catalog.logistics_dlt_schema.silver_shipments_dlt_2
+COMMENT "Enriched and split shipments data"
+TBLPROPERTIES ("quality" = "silver")
+AS
+SELECT
+  *,
+  'Logistics' AS domain,
+  current_timestamp() AS ingestion_timestamp,
+  CAST(False AS BOOLEAN) AS is_expedited_flag_initial,
+  TO_DATE(shipment_date, 'yy-MM-dd') AS shipment_date_clean,
+  ROUND(shipment_cost, 2) AS shipment_cost_clean,
+  CAST(shipment_weight_kg AS DOUBLE) AS shipment_weight_clean,
+  CONCAT_WS('-', source_city, destination_city) AS route_segment,
+  CONCAT_WS('_', vehicle_type, shipment_id) AS vehicle_identifier,
+  YEAR(TO_DATE(shipment_date, 'yy-MM-dd')) AS shipment_year,
+  MONTH(TO_DATE(shipment_date, 'yy-MM-dd')) AS shipment_month,
+  CASE WHEN dayofweek(TO_DATE(shipment_date, 'yy-MM-dd')) IN (1, 7) THEN TRUE ELSE FALSE END AS is_weekend,
+  CASE WHEN shipment_status IN ('IN_TRANSIT', 'DELIVERED') THEN TRUE ELSE FALSE END AS is_expedited,
+  ROUND(shipment_cost / shipment_weight_kg, 2) AS cost_per_kg,
+  ROUND(shipment_cost * 0.18, 2) AS tax_amount,
+  DATEDIFF(current_date(), TO_DATE(shipment_date, 'yy-MM-dd')) AS days_since_shipment,
+  CASE WHEN shipment_cost > 50000 THEN TRUE ELSE FALSE END AS is_high_value,
+  SUBSTRING(order_id, 1, 3) AS order_prefix,
+  SUBSTRING(order_id, 4, 10) AS order_sequence,
+  DAY(TO_DATE(shipment_date, 'yy-MM-dd')) AS ship_day,
+  CONCAT_WS('->', source_city, destination_city) AS route_lane
+FROM STREAM(soundhar_catalog.logistics_dlt_schema.bronze_shipment_data2);
+

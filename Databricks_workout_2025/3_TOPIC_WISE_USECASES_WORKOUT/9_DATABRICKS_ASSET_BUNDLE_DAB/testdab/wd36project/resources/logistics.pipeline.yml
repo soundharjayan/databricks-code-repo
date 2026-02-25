@@ -1,0 +1,18 @@
+resources:
+  pipelines:
+    pipeline_logistics_dp_pipeline_for_dab:
+      name: Logistics_dp_pipeline_for_dab
+      libraries:
+        - glob:
+            include: /Workspace/Users/soundharjayan@gmail.com/databricks-code-repo/Databricks_workout_2025/3_TOPIC_WISE_USECASES_WORKOUT/9_DATABRICKS_ASSET_BUNDLE_DAB/testdab/wd36project/src/Logistics_dp_pipeline_for_dab/transformations/**
+      schema: logistics_dab_schema
+      continuous: false
+      development: false
+      photon: true
+      channel: CURRENT
+      catalog: soundhar_catalog
+      serverless: true
+      root_path: /Workspace/Users/soundharjayan@gmail.com/databricks-code-repo/Databricks_workout_2025/3_TOPIC_WISE_USECASES_WORKOUT/9_DATABRICKS_ASSET_BUNDLE_DAB/testdab/wd36project/src/Logistics_dp_pipeline_for_dab
+      environment:
+        dependencies:
+          - word2number

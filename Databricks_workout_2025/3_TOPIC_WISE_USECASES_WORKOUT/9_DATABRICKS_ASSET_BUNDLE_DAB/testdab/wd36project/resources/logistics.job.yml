@@ -1,0 +1,11 @@
+resources:
+  jobs:
+    Logistics_dp_Job_schedule_for_dab:
+      name: Logistics_dp_Job_schedule_for_dab
+      tasks:
+        - task_key: 1_logistics_job_schedule_for_dab
+          pipeline_task:
+            pipeline_id: 98df12a5-0af4-45c2-83ab-c88cbaea6480
+      queue:
+        enabled: true
+      performance_target: PERFORMANCE_OPTIMIZED
