@@ -1,0 +1,15 @@
+{
+	"name": "soundharjayan-adf-studio",
+	"properties": {
+		"trustModeClaimForMi": {
+			"value": "Disabled",
+			"editable": true
+		}
+	},
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "85fba194-0ee9-4d73-be89-451fab2c978f",
+		"tenantId": "d282161d-31c8-4698-be9e-26f18fb7660f"
+	}
+}
